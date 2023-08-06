@@ -1,3 +1,6 @@
+# My ignored
+.untracked
+
 # Miscellaneous
 *.class
 *.log
