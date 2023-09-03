@@ -15,10 +15,10 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => SongsProvider(),
       child: MaterialApp(
-        title: 'Provider API Call',
-        theme: ThemeData(
-          primarySwatch: Colors.blueGrey,
-        ),
+        title: 'Wink點歌',
+        themeMode: ThemeMode.light,
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
         debugShowCheckedModeBanner: false,
         home: const HomePage(),
       ),

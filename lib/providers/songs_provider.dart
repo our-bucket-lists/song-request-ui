@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -13,8 +14,7 @@ class SongsProvider extends ChangeNotifier {
   Songs searchedSongs = Songs(data: []);
   String searchText = '';
 
-  //
-  getDataFromAPI({String keyword=''}) async {
+  getSearchResultAPI({String keyword=''}) async {
     isLoading = true;
     notifyListeners();
     
@@ -32,26 +32,62 @@ class SongsProvider extends ChangeNotifier {
     } catch (e) {
       error = e.toString();
     }
-    isLoading = false;
-    updateData();
-  }
-
-  updateData() {
     searchedSongs.data.clear();
     searchedSongs.data.addAll(songs.data);
-    // if (searchText.isEmpty) {
-    //   searchedSongs.data.addAll(songs.data);
-    // } else {
-    //   searchedSongs.data.addAll(songs.data
-    //       .where((element) =>
-    //           element.name!.toLowerCase().startsWith(searchText))
-    //       .toList());
-    // }
+    isLoading = false;
     notifyListeners();
   }
 
   search(String searchText) async {
-    await getDataFromAPI(keyword: searchText);
-    // updateData();
+    await getSearchResultAPI(keyword: searchText);
   }
+
+  bool isEmpty = true;
+  Songs addedSongs = Songs(data: []);
+
+  postSongRequestAPI() async {
+    isLoading = true;
+    notifyListeners();
+    
+    try {
+      Response response = await http.get(
+        Uri.parse('$apiEndpoint'
+      ));
+      if (response.statusCode == 200) {
+        songs = songsFromJson(response.body);
+      } else {
+        error = response.statusCode.toString();
+      }
+    } catch (e) {
+      error = e.toString();
+    }
+    searchedSongs.data.clear();
+    searchedSongs.data.addAll(songs.data);
+    isLoading = false;
+    notifyListeners();
+  }
+
+  addToCart(SongModel song) async {
+    addedSongs.data.add(song);
+    isEmpty = addedSongs.data.isEmpty;
+    notifyListeners();
+  }
+
+  removeFromCart(int index) async {
+    addedSongs.data.removeAt(index);
+    isEmpty = addedSongs.data.isEmpty;
+    notifyListeners();
+  }
+  
+  clearCart() async {
+    addedSongs.data.clear();
+    isEmpty = addedSongs.data.isEmpty;
+    notifyListeners();
+  }
+
+  submitSongRequestsList() async {
+    Map<String, dynamic> postBody = addedSongs.toJson();
+    log('Post body: $postBody');
+  }
+
 }
