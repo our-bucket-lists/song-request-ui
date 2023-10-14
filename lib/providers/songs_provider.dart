@@ -85,8 +85,8 @@ class SongsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  submitSongRequestsList() async {
-    Map<String, dynamic> postBody = addedSongs.toJson();
+  submitSongRequest(SongModel song) async {
+    Map<String, dynamic> postBody = song.toJson();
     log('Post body: $postBody');
   }
 

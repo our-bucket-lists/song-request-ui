@@ -39,7 +39,7 @@ class _CartPageState extends State<CartPage> {
                   text: '送出',
                   onPressed: () async {
                     log('The song requests list has been summit.');
-                    await provider.submitSongRequestsList();
+                    //await provider.submitSongRequestsList();
                   }
                 ),
               ],

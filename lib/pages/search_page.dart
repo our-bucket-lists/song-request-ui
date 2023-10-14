@@ -88,7 +88,7 @@ class _SearchPageState extends State<SearchPage> {
                 duration: const Duration(microseconds: 400000),
               ),
             );
-            songsProvider.addToCart(songsProvider.searchedSongs.data[index]);
+            songsProvider.submitSongRequest(songsProvider.searchedSongs.data[index]);
           }
         ),
       ),
